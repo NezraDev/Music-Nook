@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.netlify/
+.playwright/
+.venv/
+.cache/
+.impeccable/review/lighthouse-profile/
+
+.impeccable/
+images/Liam/IMG_1575.MOV

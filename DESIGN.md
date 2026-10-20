@@ -1,0 +1,2 @@
+# Music Nook visual system
+A welcoming illustrated music folio: generous cream margins, an ink-navy opening spread, the supplied piano-and-bird logo as the central illustration, refined Fraunces headings and DM Sans text. Teal controls and mint supporting surfaces. Warm gold is reserved for the musical staff accent. Alternate broad editorial sections and open, ruled service rows rather than a repeating card grid. Mobile follows the same reading order with a keyboard-accessible disclosure menu. All unknown business facts are marked draft placeholders.
