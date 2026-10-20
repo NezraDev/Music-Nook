@@ -28,41 +28,89 @@ export function Action({ service, label = d.buttons.inquire, className = "" }) {
 }
 function Keyboard() {
   return (
-    <div className="keyboard" role="img" aria-label={d.ui.lessonArt}>
-      {Array.from({ length: 14 }, (_, i) => (
-        <i
-          key={i}
-          className={[0, 1, 3, 4, 5].includes(i % 7) ? "black-key" : ""}
-        />
-      ))}
+    <div className="piano-scene">
+      <div className="keyboard">
+        {Array.from({ length: 7 }, (_, i) => (
+          <div className="piano-key-pair" key={i}>
+            <span className="piano-key" style={{ "--key-index": i }} />
+            {[0, 1, 3, 4, 5].includes(i % 7) && (
+              <span className="piano-key piano-key-black" style={{ "--key-index": i + 3 }} />
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
+function VoiceArt() {
+  return (
+    <div className="instrument-play voice-scene">
+      <span className="voice-visual">
+        <svg className="microphone-mark" viewBox="0 0 100 150" aria-hidden="true">
+          <rect x="30" y="10" width="40" height="82" rx="20" />
+          <path d="M20 68v12a30 30 0 0 0 60 0V68M50 110v28m-20 0h40" />
+          <path className="mic-grille" d="M35 30h30M35 41h30M35 52h30M35 63h30" />
+        </svg>
+        <span className="floating-notes" aria-hidden="true">
+          {["♪", "♫", "♪"].map((note, i) => <span key={i} style={{ "--note-index": i }}>{note}</span>)}
+        </span>
+      </span>
+    </div>
+  );
+}
+function GuitarArt() {
+  return (
+    <div className="instrument-play guitar-scene">
+      <svg className="guitar-illustration" viewBox="0 0 120 210" aria-hidden="true">
+        <path className="guitar-body" d="M60 88C36 76 23 92 31 111c9 20-19 20-19 49 0 28 21 42 48 42s48-14 48-42c0-29-28-29-19-49 8-19-5-35-29-23Z" />
+        <path className="guitar-neck" d="M51 24h18v105H51zM48 8h24v26H48z" />
+        <path className="guitar-frets" d="M52 45h16M52 57h16M52 69h16M52 81h16M52 93h16M52 105h16" />
+        <circle className="guitar-rosette" cx="60" cy="145" r="20" />
+        <circle className="guitar-soundhole" cx="60" cy="145" r="15" />
+        <path className="guitar-bridge" d="M43 178h34v8H43z" />
+        <g className="animated-strings">
+          {[55, 57, 59, 61, 63, 65].map((x, i) => <path key={x} style={{ "--string-index": i }} d={`M${x} 16V182`} />)}
+        </g>
+        <path className="guitar-tuners" d="M44 15h7m-7 9h7m18-9h7m-7 9h7" />
+      </svg>
+    </div>
+  );
+}
+function InstrumentPanel({ children }) {
+  const panel = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
+    observer.observe(panel.current);
+    return () => observer.disconnect();
+  }, []);
+  return <div className="lesson-art" ref={panel} data-live={visible} aria-hidden="true">{children}</div>;
+}
 function LessonRows({ full = false }) {
   return (
-    <div className="lesson-rows">
-      {d.services.map((s, i) => (
+    <div className={`lesson-rows${full ? " lesson-rows-services" : " lesson-rows-home"}`}>
+      {d.services.map((s) => (
         <article className={`lesson lesson-${s.id}`} key={s.id}>
-          <div className="lesson-art" aria-hidden="true">
+          <InstrumentPanel>
             {s.id === "piano" ? (
               <Keyboard />
             ) : s.id === "voice" ? (
-              <div className="soundwaves">
-                {[28, 46, 72, 96, 60, 38, 78, 100, 68, 42, 24].map((h, j) => (
-                  <i key={j} style={{ height: h }} />
-                ))}
-              </div>
+              <VoiceArt />
             ) : (
-              <svg className="guitar-mark" viewBox="0 0 58 150" aria-hidden="true">
-                <path className="guitar-neck" d="M26 14h6v57h-6zM23 8h12v10H23z" />
-                <path className="guitar-body" d="M29 57c-9-4-15 1-14 10 1 7 8 10 5 17-3 7-8 12-8 23 0 19 8 31 17 31s17-12 17-31c0-11-5-16-8-23-3-7 4-10 5-17 1-9-5-14-14-10z" />
-                <circle className="guitar-soundhole" cx="29" cy="98" r="7" />
-                <path className="guitar-strings" d="M28 18v72m2-72v72m-8-48h14m-14 7h14m-14 7h14m-14 7h14m-14 7h14" />
-              </svg>
+              <GuitarArt />
             )}
-          </div>
+          </InstrumentPanel>
           <div>
-            <h2>{s.name}</h2>
+            <div className={full ? "lesson-heading" : undefined}>
+              <h2>{s.name}</h2>
+              {full && (
+                <aside className="lesson-price" aria-label={`${s.name} base price`}>
+                  <span>{d.pages.services.basePriceLabel}</span>
+                  <strong>{d.pages.services.basePrice}</strong>
+                  <small>{d.pages.services.basePriceNote}</small>
+                </aside>
+              )}
+            </div>
             <p className="large-copy">{s.short}</p>
             {full && (
               <>
@@ -144,23 +192,23 @@ function Home() {
     <>
       <section className="hero">
         <div className="hero-copy">
-          <h1>{p.headline}</h1>
+          <span className="hero-eyebrow">Private music lessons, at home</span>
+          <h1>
+            {p.headline.split("\n").map((line) => (
+              <span key={line}>{line}</span>
+            ))}
+          </h1>
           <p>{p.intro}</p>
           <div className="actions">
-            <Action />
-            <Link className="hero-link" to="/services">
+            <Action className="hero-cta hero-cta-primary" />
+            <Link className="button hero-cta hero-cta-secondary" to="/services">
               {d.buttons.explore}
               <span aria-hidden="true">{d.ui.arrow}</span>
             </Link>
           </div>
-          <Link className="text-link home-faq-link" to="/faq">
-            {d.buttons.faq} <span aria-hidden="true">{d.ui.arrow}</span>
-          </Link>
         </div>
         <figure className="hero-art">
-          <div className="staff" aria-hidden="true" />
-          <Image image={d.brand.logo} fetchPriority="high" />
-          <figcaption>{p.artCaption}</figcaption>
+          <Image image={p.heroImage} fetchPriority="high" />
         </figure>
       </section>
       <section className="section">
@@ -184,9 +232,23 @@ function Home() {
           ))}
         </div>
       </section>
+      <section className="section music-benefits" aria-labelledby="music-benefits-title">
+        <div className="section-intro">
+          <h2 id="music-benefits-title">{p.musicBenefitsTitle}</h2>
+          <p>{p.musicBenefitsIntro}</p>
+        </div>
+        <div className="music-benefit-grid">
+          {p.musicBenefits.map((benefit) => (
+            <article key={benefit.id}>
+              <h3>{benefit.title}</h3>
+              <p>{benefit.text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
       <InstructorPreview />
       {approvedMedia(d.gallery).length > 0 && (
-        <section className="section">
+        <section className="section home-gallery">
           <h2>{p.galleryTitle}</h2>
           <Suspense fallback={<p>{d.ui.loading}</p>}>
             <Gallery preview />
@@ -201,6 +263,17 @@ function Home() {
     </>
   );
 }
+function ServiceAreas() {
+  return (
+    <div className="service-area-list">
+      <p>{d.contact.serviceArea}</p>
+      <ul>
+        {d.contact.serviceAreas.map((area) => <li key={area}>{area}</li>)}
+      </ul>
+      <p className="service-area-note">{d.contact.serviceAreaNote}</p>
+    </div>
+  );
+}
 function About() {
   const p = d.pages.about;
   return (
@@ -212,6 +285,7 @@ function About() {
           {p.story.map((t) => (
             <p key={t}>{t}</p>
           ))}
+          <ServiceAreas />
         </div>
       </section>
       <section className="section mint">
@@ -251,6 +325,21 @@ function Services() {
       <section className="section">
         <LessonRows full />
       </section>
+      <section className="section service-scope" aria-labelledby="service-scope-title">
+        <div className="section-intro">
+          <h2 id="service-scope-title">{p.scopeTitle}</h2>
+          <p>{p.scopeIntro}</p>
+        </div>
+        <div className="music-benefit-grid">
+          {p.scopeItems.map((item) => (
+            <article key={item.id}>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+              {item.showServiceAreas && <ServiceAreas />}
+            </article>
+          ))}
+        </div>
+      </section>
       <section className="section mint">
         <h2>{p.processTitle}</h2>
         <ol className="process">
@@ -275,6 +364,7 @@ function Services() {
             <details className="services-faq-item" key={f.id}>
               <summary>{f.question}</summary>
               <p>{f.answer}</p>
+              {f.showServiceAreas && <ServiceAreas />}
             </details>
           ))}
         </div>
@@ -319,7 +409,7 @@ function FAQPage() {
   const p = d.pages.faq;
   return (
     <>
-      <section className="faq-page-head">
+      <section className="page-head faq-page-head">
         <h1>{p.title}</h1>
         <p>{p.intro}</p>
       </section>
@@ -330,6 +420,7 @@ function FAQPage() {
               <summary>{f.question}</summary>
               <div className="faq-page-answer">
                 <p>{f.answer}</p>
+                {f.showServiceAreas && <ServiceAreas />}
               </div>
             </details>
           ))}
@@ -352,44 +443,6 @@ function FAQPage() {
     </>
   );
 }
-function Challenge({ onToken }) {
-  const host = useRef(null);
-  useEffect(() => {
-    const key = import.meta.env.VITE_TURNSTILE_SITE_KEY;
-    if (!key) return;
-    let id,
-      cancelled = false;
-    const draw = () => {
-      if (cancelled || !host.current) return;
-      id = window.turnstile.render(host.current, {
-        sitekey: key,
-        action: "inquiry",
-        callback: onToken,
-        "expired-callback": () => onToken(""),
-        "error-callback": () => onToken(""),
-      });
-    };
-    let script = document.querySelector("script[data-turnstile]");
-    if (window.turnstile) draw();
-    else {
-      if (!script) {
-        script = document.createElement("script");
-        script.src =
-          "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
-        script.dataset.turnstile = "true";
-        script.async = true;
-        document.head.append(script);
-      }
-      script.addEventListener("load", draw);
-    }
-    return () => {
-      cancelled = true;
-      script?.removeEventListener("load", draw);
-      if (id !== undefined) window.turnstile?.remove(id);
-    };
-  }, []);
-  return <div ref={host} />;
-}
 function InquiryForm() {
   const f = d.forms.inquiry;
   const loc = useLocation();
@@ -399,6 +452,7 @@ function InquiryForm() {
       name: "",
       email: "",
       phone: "",
+      facebook: "",
       type: f.types.some((x) => x.id === q.get("intent"))
         ? q.get("intent")
         : "general",
@@ -418,11 +472,25 @@ function InquiryForm() {
     })),
     [errors, setErrors] = useState({}),
     [status, setStatus] = useState(""),
-    [pending, setPending] = useState(false),
-    [token, setToken] = useState(""),
-    [challengeKey, setChallengeKey] = useState(0);
-  const errorRef = useRef(null);
+    [outcome, setOutcome] = useState(null),
+    [pending, setPending] = useState(false);
+  const statusDialog = useRef(null);
+  const dialogButton = useRef(null);
+  const submitButton = useRef(null);
   const pendingRef = useRef(false);
+  useEffect(() => {
+    if (!status || !outcome) return;
+    const dialog = statusDialog.current;
+    if (!dialog.open) dialog.showModal();
+    dialogButton.current?.focus();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      if (dialog.open) dialog.close();
+      submitButton.current?.focus();
+    };
+  }, [status, outcome]);
   useEffect(() => {
     const q = new URLSearchParams(loc.search);
     setValues((v) => ({
@@ -486,34 +554,26 @@ function InquiryForm() {
       );
       return;
     }
-    if (!import.meta.env.VITE_TURNSTILE_SITE_KEY) {
-      setStatus(f.messages.unavailable);
-      return;
-    }
-    if (!token) {
-      setStatus(f.messages.challenge);
-      return;
-    }
     pendingRef.current = true;
     setPending(true);
     try {
       const res = await fetch("/.netlify/functions/inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, token }),
+        body: JSON.stringify(values),
         signal: AbortSignal.timeout(30000),
       });
       const result = await res.json();
       if (!res.ok) throw new Error(result.code || "error");
       setStatus(f.messages.success);
+      setOutcome("success");
       setValues(initial());
     } catch (err) {
       setStatus(f.messages[err.message] || f.messages.error);
+      setOutcome("error");
     } finally {
       setPending(false);
       pendingRef.current = false;
-      setToken("");
-      setChallengeKey((k) => k + 1);
     }
   }
   return (
@@ -523,6 +583,7 @@ function InquiryForm() {
         {field("name", true)}
         {field("email", true, "email")}
         {field("phone", false, "tel")}
+        {field("facebook", false, "url")}
         {["type", "service", "age"].map((name) => (
           <div className="field" key={name}>
             <label htmlFor={name}>
@@ -618,20 +679,30 @@ function InquiryForm() {
           )}
         </div>
       )}
-      <Challenge key={challengeKey} onToken={setToken} />
       <p className="form-note">{d.pages.contact.notice}</p>
-      <button className="button" disabled={pending} type="submit">
+      <button ref={submitButton} className="button" disabled={pending} type="submit">
         {pending ? f.messages.submitting : d.buttons.send}
         <span aria-hidden="true">{d.ui.arrow}</span>
       </button>
-      <div
-        ref={errorRef}
-        className="form-status"
-        role="status"
-        aria-live="polite"
+      <dialog
+        ref={statusDialog}
+        className={`inquiry-modal${outcome === "error" ? " inquiry-modal-error" : ""}`}
+        aria-labelledby="inquiry-modal-title"
+        aria-describedby="inquiry-modal-description"
+        onClose={() => { setStatus(""); setOutcome(null); }}
+        onClick={(event) => { if (event.target === event.currentTarget) event.currentTarget.close(); }}
       >
-        {status}
-      </div>
+        <div className="inquiry-modal-content">
+          <span className="inquiry-modal-icon" aria-hidden="true">
+            {outcome === "success" ? "✓" : "!"}
+          </span>
+          <h2 id="inquiry-modal-title">{outcome === "success" ? f.messages.successTitle : f.messages.errorTitle}</h2>
+          <p id="inquiry-modal-description">{status}</p>
+          <button ref={dialogButton} className="button" type="button" onClick={() => statusDialog.current.close()}>
+            {outcome === "success" ? f.messages.done : f.messages.backToForm}
+          </button>
+        </div>
+      </dialog>
     </form>
   );
 }
@@ -689,7 +760,7 @@ function ContactDetails() {
         <div key={k}>
           <dt>{d.contact.labels[k]}</dt>
           <dd>
-            {k === "email" &&
+            {k === "serviceArea" ? <ServiceAreas /> : k === "email" &&
             /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.contact.email) ? (
               <a href={`mailto:${d.contact.email}`}>{d.contact.email}</a>
             ) : k === "phone" && /^\+?[\d ()-]{7,}$/.test(d.contact.phone) ? (
@@ -773,10 +844,10 @@ export default function App() {
       <a className="skip-link" href="#main">
         {d.ui.skip}
       </a>
-      <header className={pathname === "/faq" ? "faq-site-header" : undefined}>
-        <Link to="/" className="wordmark" aria-label={d.brand.name}>
-          <span className="brand-dot" aria-hidden="true" />
-          {d.brand.name}
+      <header>
+        <Link to="/" className="nav-brand">
+          <img src={d.brand.logo.src} alt="" aria-hidden="true" />
+          <span>{d.brand.name}</span>
         </Link>
         <button
           ref={menuButton}
@@ -810,11 +881,11 @@ export default function App() {
       <main id="main" ref={main} tabIndex="-1">
         {page}
       </main>
-      <footer className={pathname === "/faq" ? "faq-page-footer" : undefined}>
+      <footer>
         <div className="footer-top">
           <div>
-            <Link className="wordmark" to="/">
-              {d.brand.name}
+            <Link className="footer-logo-link" to="/" aria-label={d.brand.name}>
+              <Image image={d.brand.logo} className="footer-logo" />
             </Link>
             <p>{d.footer.line}</p>
           </div>
@@ -828,8 +899,9 @@ export default function App() {
           <div>
             <h2>{d.footer.socialHeading}</h2>
             <SocialLinks />
-            <p>{d.contact.email || d.contact.placeholders.email}</p>
-            <p>{d.contact.serviceArea || d.contact.placeholders.serviceArea}</p>
+            <p><a href={`mailto:${d.contact.email}`}>{d.contact.email}</a></p>
+            <p><a href={`tel:${d.contact.phone}`}>{d.contact.phone}</a></p>
+            <ServiceAreas />
           </div>
         </div>
         <div className="footer-bottom">

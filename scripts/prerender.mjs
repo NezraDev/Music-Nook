@@ -107,7 +107,7 @@ for (const route of entries) {
     `<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
   );
   const body = await render(route.path);
-  if (/\[(?:Add|Instructor)/.test(body)) {
+  if (/\[[^\]]+\]/.test(body)) {
     index = false;
     tags[2] = '<meta name="robots" content="noindex,nofollow">';
     console.log(`Draft placeholders: ${route.path} (noindex)`);
@@ -152,6 +152,7 @@ const allowed = new Set([
   d.brand.logo.src,
   d.seo.shareImage.src,
   d.brand.favicon.src,
+  d.pages.home.heroImage.src,
   ...d.gallery
     .filter((i) => i.publicationPermission === true)
     .flatMap((i) => [i.src, i.thumbnail]),

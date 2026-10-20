@@ -14,7 +14,7 @@ npm run preview
 npm test
 ```
 
-`npm run dev` runs the interface only. For **real local form requests**, copy `.env.example` to `.env`, configure the values below, and run `npx netlify-cli dev`. Use the Netlify Dev address (normally `http://localhost:8888`) as `CONTACT_ALLOWED_ORIGIN`. Register the matching local hostname in Turnstile and set `TURNSTILE_HOSTNAME=localhost`. Never use test credentials in production. Vite preview is not a substitute for Netlify Functions.
+`npm run dev` runs the interface only. For **real local form requests**, copy `.env.example` to `.env`, configure the values below, and run `npx netlify-cli dev`. Use the Netlify Dev address (normally `http://localhost:8888`) as `CONTACT_ALLOWED_ORIGIN`. Vite preview is not a substitute for Netlify Functions. Cloudflare Turnstile is not required.
 
 ## Edit content
 
@@ -50,15 +50,14 @@ The browser posts only to `/.netlify/functions/inquiry`. Configure Netlify envir
 
 - `RESEND_API_KEY`: Resend server key.
 - `CONTACT_FROM_EMAIL`: sender on a domain you verified in Resend, with the required DNS records.
-- `CONTACT_TO_EMAIL`: the actual lesson inquiry inbox. These addresses are server configuration, not browser inputs.
-- `VITE_TURNSTILE_SITE_KEY`: public Cloudflare Turnstile widget key.
-- `TURNSTILE_SECRET_KEY`: matching **server-only** secret.
-- `TURNSTILE_HOSTNAME`: exact permitted hostname, without protocol, path, or port.
+- `CONTACT_TO_EMAIL=the.musicnook12@gmail.com`: the lesson inquiry inbox. The handler defaults to this address if the variable is blank. Sender and recipient addresses are server configuration, not browser inputs.
 - `CONTACT_ALLOWED_ORIGIN`: exact permitted origin, including protocol and local port when needed; no trailing slash.
 
-Create a Turnstile widget with the allowed hostname in the Cloudflare dashboard. Its `inquiry` action and hostname are verified server-side. Tokens are single-use and externally verified; abuse protection does not rely on process memory across serverless instances. The function also checks origin, content type, honeypot, streamed request size (16 KB), lengths, allowlisted values, and privacy requirements. Emails use plain text so submitted HTML cannot execute, a fixed recipient/sender, validated visitor `replyTo`, and a token-derived Resend idempotency key. No full submissions are logged by application code. Resend SDK logs provider errors in local development; Netlify runs with `NODE_ENV=production` to disable SDK development logging.
+The function checks origin, content type, honeypot, streamed request size (16 KB), lengths, allowlisted values, and privacy requirements. Emails include a branded HTML template with escaped visitor content and a plain-text alternative, a fixed recipient/sender, validated visitor `replyTo`, and a generated Resend idempotency key. No full submissions are logged by application code. Resend SDK logs provider errors in local development; use `NODE_ENV=production` for Functions to disable SDK development logging. There is no CAPTCHA or server-side rate limiter; origin checking and the honeypot do not prevent all automated submissions.
 
-Missing configuration fails with 503 and the editable unavailable message. Provider errors stay out of browser responses. Success means Resend accepted the request; it is not inbox delivery or a lesson booking. The client prevents duplicate pending submissions, retains content after errors, refreshes the challenge, and clears content only on success.
+Use the Gmail address as the recipient, not as `CONTACT_FROM_EMAIL`. For production, configure the sender using a domain you own and have verified in Resend. Set the server variables in Netlify with Functions scope, then redeploy. Copying `.env.example` alone does not configure the deployed function. Replies to inquiry notifications go to the visitor's email address. Delivery must be checked with a real form submission after deployment; mocked tests do not send mail.
+
+Missing configuration fails with 503 and the editable unavailable message. Provider errors stay out of browser responses. Success means Resend accepted the request; it is not inbox delivery or a lesson booking. The client prevents duplicate pending submissions, retains content after errors, and clears content only on success.
 
 Add the owner-approved privacy notice before launch. Set `forms.inquiry.privacy.approved`, `noticeText` and `noticeUrl`, then set `required` if acknowledgment is required. The draft notice is visible for editing; acknowledgment defaults off because no approved notice was supplied. A required but unapproved notice causes the server to fail closed.
 

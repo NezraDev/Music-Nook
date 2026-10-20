@@ -16,7 +16,6 @@ const valid = {
   message: "I would like to ask about lessons.",
   privacy: false,
   website: "",
-  token: "valid-token",
 };
 const req = (v = valid, origin = "https://studio.test") =>
   new Request("https://studio.test/.netlify/functions/inquiry", {
@@ -46,33 +45,30 @@ test("coordinates and publication permission fail closed", () => {
     0,
   );
 });
+test("Facebook link is optional and validates provided URLs", () => {
+  assert.deepEqual(validateInquiry({ ...valid, facebook: "" }), {});
+  assert.deepEqual(validateInquiry({ ...valid, facebook: "https://www.facebook.com/example" }), {});
+  for (const facebook of ["https://example.com", "https://facebook.com.evil.test", "javascript:alert(1)", 123])
+    assert.ok(validateInquiry({ ...valid, facebook }).facebook);
+});
 test("function gracefully rejects missing configuration", async () => {
   const old = process.env.RESEND_API_KEY;
   delete process.env.RESEND_API_KEY;
   assert.equal((await handler(req())).status, 503);
   if (old) process.env.RESEND_API_KEY = old;
 });
-test("server validates challenge, submission, safe text email and provider acceptance", async () => {
+test("server validates submission, safe text email and provider acceptance without Turnstile", async () => {
   const original = { ...process.env };
   const nativeFetch = global.fetch;
   Object.assign(process.env, {
     RESEND_API_KEY: "re_test",
     CONTACT_FROM_EMAIL: "studio@test.example",
     CONTACT_TO_EMAIL: "owner@test.example",
-    TURNSTILE_SECRET_KEY: "secret",
-    TURNSTILE_HOSTNAME: "studio.test",
     CONTACT_ALLOWED_ORIGIN: "https://studio.test",
   });
-  let accept = true,
-    challenge = true,
-    email;
+  let accept = true, email;
   global.fetch = async (url, options) => {
-    if (String(url).includes("siteverify"))
-      return Response.json({
-        success: challenge,
-        hostname: "studio.test",
-        action: "inquiry",
-      });
+    assert.ok(String(url).startsWith("https://api.resend.com/"));
     email = JSON.parse(options.body);
     return accept
       ? Response.json({ id: "test-id" })
@@ -101,18 +97,30 @@ test("server validates challenge, submission, safe text email and provider accep
       200,
     );
     assert.ok(email.text.includes("<script>"));
-    assert.equal(email.html, undefined);
+    assert.ok(email.html.includes("&lt;script&gt;"));
+    assert.ok(!email.html.includes("<script>"));
+    assert.ok(email.html.includes("Visitor details"));
+    assert.ok(email.html.includes("Piano lessons"));
+    assert.ok(email.html.includes("Not provided"));
     assert.equal(email.reply_to, valid.email);
+    assert.equal((await handler(req({ ...valid, facebook: "https://www.facebook.com/example" }))).status, 200);
+    assert.ok(email.text.includes("Facebook profile: https://www.facebook.com/example"));
+    assert.ok(email.html.includes("https://www.facebook.com/example"));
     assert.equal(
       Array.isArray(email.to) ? email.to[0] : email.to,
       "owner@test.example",
     );
+    delete process.env.CONTACT_TO_EMAIL;
+    assert.equal((await handler(req())).status, 200);
+    assert.equal(
+      Array.isArray(email.to) ? email.to[0] : email.to,
+      "the.musicnook12@gmail.com",
+    );
+    assert.equal(email.reply_to, valid.email);
     accept = false;
     const fail = await handler(req());
     assert.equal(fail.status, 502);
     assert.equal((await fail.json()).code, "error");
-    challenge = false;
-    assert.equal((await handler(req())).status, 400);
   } finally {
     global.fetch = nativeFetch;
     for (const key of Object.keys(process.env))

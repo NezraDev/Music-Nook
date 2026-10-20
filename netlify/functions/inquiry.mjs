@@ -1,6 +1,11 @@
 import { Resend } from "resend";
+import { randomUUID } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
+import { parseEnv } from "node:util";
 import { validateInquiry } from "../../src/shared.js";
 import { siteData } from "../../src/data.js";
+import { inquiryEmail } from "../lib/inquiry-email.mjs";
 const json = (status, code) =>
   new Response(JSON.stringify({ code }), {
     status,
@@ -11,13 +16,11 @@ const json = (status, code) =>
   });
 export default async function handler(request) {
   if (request.method !== "POST") return json(405, "invalid");
-  const env = process.env;
+  const env = await inquiryEnvironment(request);
+  const recipient = env.CONTACT_TO_EMAIL?.trim() || "the.musicnook12@gmail.com";
   if (
     !env.RESEND_API_KEY ||
     !env.CONTACT_FROM_EMAIL ||
-    !env.CONTACT_TO_EMAIL ||
-    !env.TURNSTILE_SECRET_KEY ||
-    !env.TURNSTILE_HOSTNAME ||
     !env.CONTACT_ALLOWED_ORIGIN
   )
     return json(503, "unavailable");
@@ -61,10 +64,7 @@ export default async function handler(request) {
       (k) => typeof v[k] !== "string",
     ) ||
     Object.keys(validateInquiry(v)).length ||
-    /[\r\n]/.test(v.email) ||
-    typeof v.token !== "string" ||
-    v.token.length > 2048 ||
-    !v.token
+    /[\r\n]/.test(v.email)
   )
     return json(400, "invalid");
   if (
@@ -73,46 +73,16 @@ export default async function handler(request) {
   )
     return json(503, "unavailable");
   try {
-    const challenge = await fetch(
-      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-      {
-        method: "POST",
-        body: new URLSearchParams({
-          secret: env.TURNSTILE_SECRET_KEY,
-          response: v.token,
-        }),
-        signal: AbortSignal.timeout(10000),
-      },
-    );
-    if (!challenge.ok) return json(503, "error");
-    const verified = await challenge.json();
-    if (
-      !verified.success ||
-      verified.hostname !== env.TURNSTILE_HOSTNAME ||
-      verified.action !== "inquiry"
-    )
-      return json(400, "challenge");
-    const lines = [
-      `${siteData.brand.name}: ${v.type}`,
-      `Name: ${v.name.trim()}`,
-      `Email: ${v.email.trim()}`,
-      `Phone: ${v.phone.trim()}`,
-      `Lesson: ${v.service}`,
-      `Age range: ${v.age}`,
-      `Privacy acknowledgment: ${v.privacy === true ? "yes" : "no"}`,
-      "",
-      v.message.trim(),
-    ];
+    const email = inquiryEmail(v);
     const resend = new Resend(env.RESEND_API_KEY);
     const { error } = await resend.emails.send(
       {
         from: env.CONTACT_FROM_EMAIL,
-        to: env.CONTACT_TO_EMAIL,
+        to: recipient,
         replyTo: v.email.trim(),
-        subject: `${siteData.brand.name} website inquiry`,
-        text: lines.join("\n"),
+        ...email,
       },
-      { idempotencyKey: `inquiry/${await tokenHash(v.token)}` },
+      { idempotencyKey: `inquiry/${randomUUID()}` },
     );
     if (error) return json(502, "error");
     return json(200, "success");
@@ -120,7 +90,18 @@ export default async function handler(request) {
     return json(502, "error");
   }
 }
-async function tokenHash(token) {
-  const { createHash } = await import("node:crypto");
-  return createHash("sha256").update(token).digest("hex");
+async function inquiryEnvironment(request) {
+  const env = { ...process.env };
+  const hostname = new URL(request.url).hostname;
+  if (!["localhost", "127.0.0.1", "[::1]"].includes(hostname)) return env;
+  // Netlify Dev can keep an older environment after .env is edited.
+  // Read local settings per request; deployed functions use their environment only.
+  try {
+    const local = parseEnv(await readFile(resolve(process.cwd(), ".env"), "utf8"));
+    for (const key of ["RESEND_API_KEY", "CONTACT_FROM_EMAIL", "CONTACT_TO_EMAIL", "CONTACT_ALLOWED_ORIGIN"])
+      if (local[key]?.trim()) env[key] = local[key].trim();
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
+  return env;
 }

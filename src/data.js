@@ -1,5 +1,10 @@
 // All editable public copy, labels, content, media and SEO inputs belong here.
 // Never put secrets or server email routing in this file. Permission defaults to false.
+const pianoVoiceServiceAreas = [
+  "Batangas", "Calauan", "San Pablo", "Bay", "Los Baños",
+  "Pila", "Victoria", "Santa Cruz", "Calamba",
+];
+
 export const siteData = {
   brand: {
     favicon: {src: "/images/favicon.png"},
@@ -7,7 +12,7 @@ export const siteData = {
     tagline: "Building Blocks for Delightful Music",
     logo: {
       src: "/images/music-nook-logo.png",
-      alt: "The Music Nook — private piano, voice, and guitar lessons",
+      alt: "The Music Nook, private piano, voice, and guitar lessons",
       width: 500,
       height: 500,
     },
@@ -47,19 +52,21 @@ export const siteData = {
     {
       id: "facebook",
       label: "The Music Nook on Facebook",
-      url: "https://www.facebook.com/profile.php?id=100094379119490",
+      url: "https://www.facebook.com/themusicnook12",
     },
   ],
   contact: {
-    email: "",
-    phone: "",
+    email: "the.musicnook12@gmail.com",
+    phone: "09475539688",
     hours: "",
-    serviceArea: "",
+    serviceArea: "Piano and voice lessons",
+    serviceAreas: pianoVoiceServiceAreas,
+    serviceAreaNote: "Lessons outside these areas may require different arrangements. Contact us to discuss your location. For guitar lessons, contact us to confirm coverage.",
     placeholders: {
-      email: "[Add contact email]",
-      phone: "[Add phone number]",
-      serviceArea: "[Add service area]",
-      hours: "[Add business hours]",
+      email: "[contact email]",
+      phone: "[phone number]",
+      serviceArea: "[service area]",
+      hours: "[business hours]",
     },
     labels: {
       email: "Email",
@@ -84,7 +91,7 @@ export const siteData = {
     zoom: 14,
     markerText: "Approximate service area",
     directionsUrl: "",
-    placeholder: "[Add verified service area to display the map]",
+    placeholder: "[verified service area to display the map]",
     loading: "Loading service area map…",
     error:
       "The map could not load. Please contact The Music Nook to ask about the service area.",
@@ -94,36 +101,66 @@ export const siteData = {
   },
   pages: {
     home: {
-      headline: "A little spark.\nA lifetime of music.",
+      headline: "Building Blocks for\nDelightful Music",
       intro:
-        "Private piano, voice, and guitar lessons taught in the learner’s home. The learner or family provides the instrument and sheet music for the lesson.",
-      artCaption: "Building Blocks for Delightful Music",
+        "Discover piano, voice, and guitar through private lessons at home. Make room for creativity, explore the music you love, and build your musical skills one step at a time.",
+      heroImage: {
+        src: "/images/home-pianist-hero.png",
+        alt: "An adult playing piano at home",
+        width: 1983,
+        height: 793,
+      },
       lessonsTitle: "Your music starts here.",
       lessonsIntro:
-        "Explore piano, guitar, or voice lessons in the comfort of the learner’s home.",
-      experienceTitle: "Small steps.\nDelightful discoveries.",
+        "Find your place at the piano, explore your voice, or pick up the guitar. Start with the sound that inspires you.",
+      experienceTitle: "Why choose\nThe Music Nook?",
       experienceIntro:
-        "Lessons take place at home, with the learner’s instrument and music ready for the visit.",
+        "A familiar setting, space to ask questions, and music that sparks your curiosity. Discover a personal way to bring music into everyday life.",
       benefits: [
         {
           id: "personal",
-          title: "A personal path",
-          text: "[Add how lessons are personalized for each learner]",
+          title: "Private lessons, personal attention",
+          text: "A private lesson gives you space to ask questions, work through a tricky passage, and focus on the music you are learning.",
         },
         {
           id: "creative",
-          title: "Space to explore",
-          text: "Lessons are taught at the learner’s home. The learner or family provides the instrument and sheet music.",
+          title: "Learn in your own space",
+          text: "Bring music into a familiar setting with private lessons at home. Explore new skills in the space where you can continue practicing between lessons.",
         },
         {
           id: "rhythm",
-          title: "Find your rhythm",
-          text: "[Add current scheduling arrangements]",
+          title: "Find your instrument",
+          text: "Choose piano, voice, or guitar. Start with the instrument that sparks your curiosity and explore the skills behind the music you love.",
+        },
+      ],
+      musicBenefitsTitle: "A talent to nurture.\nA joy to carry with you.",
+      musicBenefitsIntro:
+        "Musical talent grows through curiosity and practice. Learning an instrument or exploring your voice offers more than a song to play: it gives you new ways to create, listen, and express yourself.",
+      musicBenefits: [
+        {
+          id: "expression",
+          title: "A voice for your creativity",
+          text: "Explore melodies, rhythm, and interpretation. Make a piece your own and discover how music can express a feeling or tell a story.",
+        },
+        {
+          id: "progress",
+          title: "Confidence in small steps",
+          text: "Learning a new chord or finishing a song gives you a moment to recognize your progress. Each small achievement is something to build on.",
+        },
+        {
+          id: "practice",
+          title: "The art of sticking with it",
+          text: "Practice is an opportunity to set a goal, slow down, and try again. A difficult passage becomes a series of manageable steps.",
+        },
+        {
+          id: "connection",
+          title: "More ways to connect",
+          text: "Listen closely, play for someone you love, or sing along with a friend. Music offers a shared language and a skill you can keep exploring.",
         },
       ],
       instructorTitle: "A familiar face.\nMusic at home.",
       instructorCopy:
-        "[Add a verified introduction to your instructor and their approach to teaching]",
+        "Meet the person behind the lessons. Ask about their teaching approach, share your musical interests, and explore whether The Music Nook is the right fit for you.",
       closingTitle: "Let’s make room for music.",
       closingCopy:
         "Tell us a little about the lessons you’re interested in. We’ll take the next step together.",
@@ -135,10 +172,9 @@ export const siteData = {
         "The Music Nook offers private piano, voice, and guitar lessons in the learner’s home. Families provide the lesson instrument and sheet music.",
       storyTitle: "Our approach to home lessons",
       story: [
-        "[Add verified background for the home-lesson service]",
-        "[Add founder or instructor background]",
-        "[Add teaching philosophy]",
-        "[Add confirmed service area]",
+        "[verified background for the home-lesson service]",
+        "[founder or instructor background]",
+        "[teaching philosophy]",
       ],
       instructorsTitle: "Meet your instructor",
       environmentTitle: "Room to learn. Room to explore.",
@@ -148,14 +184,24 @@ export const siteData = {
     services: {
       title: "Find your way into music.",
       intro:
-        "Private piano, voice, and guitar lessons are taught in the learner’s home. The learner or family provides the instrument and sheet music.",
+        "Explore private piano, voice, and guitar lessons at home. Find an instrument that interests you and contact us to discuss your learning goals.",
+      scopeTitle: "Lesson scope and preparation",
+      basePrice: "₱7,200",
+      basePriceLabel: "Base price",
+      basePriceNote: "Price may vary by location and arrangement.",
+      scopeIntro: "A few practical details to help you plan your lessons.",
+      scopeItems: [
+        { id: "location", title: "Lesson location and service area", text: "Lessons take place at the learner's home.", showServiceAreas: true },
+        { id: "materials", title: "Instrument and sheet music", text: "The learner or family provides the instrument and sheet music used during lessons. Confirm what to prepare for your chosen lesson before the visit." },
+        { id: "arrangements", title: "Lesson arrangements", text: "Confirm age and experience suitability, lesson length, availability, and rates directly with The Music Nook. Sending an inquiry does not reserve a lesson." },
+      ],
       detailLabels: {
-        ages: "Ages",
-        levels: "Skill levels",
+        ages: "Age suitability",
+        levels: "Experience level",
         format: "Lesson location",
-        duration: "Duration",
-        schedule: "Scheduling",
-        pricing: "Pricing",
+        duration: "Lesson length",
+        schedule: "Availability",
+        pricing: "Lesson rates",
       },
       processTitle: "A conversation is the first step.",
       process: [
@@ -212,7 +258,7 @@ export const siteData = {
       detailsTitle: "Contact and service area",
       privacyTitle: "Privacy notice",
       privacyDraft:
-        "[Add an owner-approved privacy notice describing who receives inquiries, how information is used, retention, and how to request deletion.]",
+        "[an owner-approved privacy notice describing who receives inquiries, how information is used, retention, and how to request deletion.]",
     },
     notFound: {
       title: "A little off key?",
@@ -223,52 +269,58 @@ export const siteData = {
     {
       id: "piano",
       name: "Piano lessons",
-      short: "Discover the possibilities at the keys.",
-      description: "[Add a verified piano lesson description]",
-      ages: "[Add eligible ages]",
-      levels: "[Add supported skill levels]",
+      short: "Private piano lessons at home.",
+      description: "Tell us about your playing experience, the piano or keyboard you use, and the music you would like to learn. We can discuss suitable lesson arrangements when you inquire.",
+      ages: "Contact us to confirm age suitability.",
+      levels: "Share your experience so we can discuss suitability.",
       format: "At the learner’s home",
-      duration: "[Add lesson duration]",
-      schedule: "[Add scheduling details]",
-      pricing: "[Add pricing or inquiry instructions]",
+      duration: "Confirm the lesson length when you inquire.",
+      schedule: "Contact us for current available times.",
+      pricing: "Request current rates when you inquire.",
     },
     {
       id: "voice",
       name: "Voice lessons",
-      short: "Explore the music in your own voice.",
-      description: "[Add a verified voice lesson description]",
-      ages: "[Add eligible ages]",
-      levels: "[Add supported skill levels]",
+      short: "Private singing lessons at home.",
+      description: "Share your singing experience and the songs or skills you would like to work on. Contact us to discuss lesson requirements and whether the lessons suit your goals.",
+      ages: "Contact us to confirm age suitability.",
+      levels: "Share your experience so we can discuss suitability.",
       format: "At the learner’s home",
-      duration: "[Add lesson duration]",
-      schedule: "[Add scheduling details]",
-      pricing: "[Add pricing or inquiry instructions]",
+      duration: "Confirm the lesson length when you inquire.",
+      schedule: "Contact us for current available times.",
+      pricing: "Request current rates when you inquire.",
     },
     {
       id: "guitar",
       name: "Guitar lessons",
-      short: "Find your rhythm and explore the strings.",
-      description: "[Add a verified guitar lesson description]",
-      ages: "[Add eligible ages]",
-      levels: "[Add supported skill levels]",
+      short: "Private guitar lessons at home.",
+      description: "Tell us about your guitar, playing experience, and musical interests. We can discuss lesson requirements and suitable arrangements when you inquire.",
+      ages: "Contact us to confirm age suitability.",
+      levels: "Share your experience so we can discuss suitability.",
       format: "At the learner’s home",
-      duration: "[Add lesson duration]",
-      schedule: "[Add scheduling details]",
-      pricing: "[Add pricing or inquiry instructions]",
+      duration: "Confirm the lesson length when you inquire.",
+      schedule: "Contact us for current available times.",
+      pricing: "Request current rates when you inquire.",
     },
   ],
   instructors: [
     {
       id: "instructor",
       name: "[Instructor name]",
-      bio: "[Add instructor biography]",
-      qualifications: "[Add verified qualifications]",
-      experience: "[Add verified teaching experience]",
+      bio: "[instructor biography]",
+      qualifications: "[verified qualifications]",
+      experience: "[verified teaching experience]",
       portrait: null,
-      portraitPlaceholder: "[Add instructor portrait]",
+      portraitPlaceholder: "[instructor portrait]",
     },
   ],
   faqs: [
+    {
+      id: "service-area",
+      question: "Which areas do you cover?",
+      answer: "Piano and voice lessons cover the following areas.",
+      showServiceAreas: true,
+    },
     {
       id: "location",
       question: "Where do lessons take place?",
@@ -683,6 +735,7 @@ export const siteData = {
         name: "Parent/guardian or adult learner name",
         email: "Email",
         phone: "Phone (optional)",
+        facebook: "Facebook profile link (optional)",
         type: "Inquiry type",
         service: "Lesson interest",
         age: "Learner age range (optional)",
@@ -691,7 +744,6 @@ export const siteData = {
         honeypot: "Leave this field empty",
         required: "Required fields are marked *",
         privacyLink: "Read the privacy notice",
-        challenge: "Complete the security check",
       },
       types: [
         { id: "lesson-inquiry", label: "Lesson inquiry" },
@@ -712,11 +764,15 @@ export const siteData = {
         noticeText: "",
       },
       messages: {
+        successTitle: "Your inquiry is on its way",
+        errorTitle: "We could not send your inquiry",
+        done: "Done",
+        backToForm: "Back to form",
         required: "Please complete this field.",
         email: "Please enter a valid email address.",
+        facebook: "Please enter a Facebook link starting with https://, or leave this field blank.",
         invalid: "Please check your inquiry and try again.",
         tooLong: "Please shorten this field.",
-        challenge: "Please complete the security check.",
         submitting: "Sending your inquiry…",
         success:
           "Thank you for your inquiry. The Music Nook will follow up to discuss your questions and next steps.",
@@ -740,7 +796,7 @@ export const siteData = {
     },
     shareImage: {
       src: "/images/music-nook-share.png",
-      alt: "The Music Nook — private piano, voice, and guitar lessons",
+      alt: "The Music Nook, private piano, voice, and guitar lessons",
       approved: true,
       width: 1200,
       height: 630,
