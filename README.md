@@ -65,6 +65,8 @@ References: [Resend send-email API](https://resend.com/docs/api-reference/emails
 
 ## Build, search and Netlify deployment
 
+The build configuration sets `NPM_FLAGS=--include=dev` so Netlify installs Vite, Tailwind, and the other build tools even when `NODE_ENV=production` is configured. Keep this flag enabled. If an older deployment failed with `vite: not found`, retry after deploying this configuration and clear the dependency cache if necessary.
+
 `npm run build` bundles with Vite then prerenders meaningful React HTML, headings, links, and metadata for all six routes plus a friendly 404. It uses React Router's StaticRouter with React server rendering; hydration adds interactions. Do not upload only the Vite output before the prerender step completes.
 
 Deploy the repository with `netlify.toml`: build `npm run build`, publish `dist`, functions `netlify/functions`. Configure variables in Netlify and rebuild after changing build-time values. Set `NODE_ENV=production` for Functions. Secrets must never use a `VITE_` prefix. The function route is handled by Netlify before static redirects. Known routes have explicit 200 rewrites to their prerendered files, so refreshes and inquiry query parameters work. Every other path uses `/404.html` with **HTTP 404**, rather than a catch-all successful SPA page. Check actual deployed status codes once a Netlify site exists.
