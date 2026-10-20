@@ -8,6 +8,7 @@
     "build": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
     "prepare:images": "node scripts/prepare-images.mjs",
+    "optimize:images": "node scripts/optimize-images.mjs",
     "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {

@@ -42,6 +42,8 @@ For an entry, replace `alt` and `caption`, select a category ID from `pages.stud
 
 ## At-home lessons and service area
 
+Run `npm run optimize:images` after preparing approved gallery photos. It creates WebP versions of the approved photos, their thumbnails, and the homepage hero, and updates their paths in `src/data.js`. PNG originals and logo artwork stay unchanged. The production image allowlist keeps the referenced optimized files.
+
 Lessons take place in the learner’s home. The learner or family provides the instrument and sheet music used during the lesson. Set `contact.serviceArea` only after the owner confirms where home visits are offered. The Contact page displays that service area as text; it does not publish a private home address or show a fixed-location map.
 
 ## Email and abuse protection

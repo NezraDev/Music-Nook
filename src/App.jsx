@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, lazy, Suspense } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { siteData as d } from "./data";
 import { inquiryUrl, approvedMedia, validateInquiry, limits } from "./shared";
+import ScrollEffects, { MusicScrollScene } from "./ScrollMusic";
 const Gallery = lazy(() => import("./Gallery"));
 export function Image({ image, decorative = false, ...props }) {
   const [bad, setBad] = useState(false);
@@ -186,6 +187,25 @@ function InstructorPreview() {
     </section>
   );
 }
+function LessonPhoto({ photo }) {
+  const media = approvedMedia(d.gallery).find((item) => item.id === photo.id);
+  if (!media) return null;
+  const preview = media.thumbnail && media.thumbnailWidth && media.thumbnailHeight;
+  return (
+    <figure className="section-photo">
+      <Image
+        image={{ ...media, alt: photo.alt, src: preview ? media.thumbnail : media.src,
+          width: preview ? media.thumbnailWidth : media.width,
+          height: preview ? media.thumbnailHeight : media.height }}
+        srcSet={preview ? `${media.thumbnail} ${media.thumbnailWidth}w, ${media.src} ${media.width}w` : undefined}
+        sizes="(max-width: 800px) 90vw, (min-width: 1680px) 650px, 42vw"
+        loading="lazy"
+        decoding="async"
+      />
+      <figcaption>{photo.caption}</figcaption>
+    </figure>
+  );
+}
 function Home() {
   const p = d.pages.home;
   return (
@@ -218,10 +238,12 @@ function Home() {
         </div>
         <LessonRows />
       </section>
+      <MusicScrollScene />
       <section className="experience">
         <div>
           <h2>{p.experienceTitle}</h2>
           <p>{p.experienceIntro}</p>
+          <LessonPhoto photo={p.experiencePhoto} />
         </div>
         <div className="benefits">
           {p.benefits.map((b) => (
@@ -237,13 +259,16 @@ function Home() {
           <h2 id="music-benefits-title">{p.musicBenefitsTitle}</h2>
           <p>{p.musicBenefitsIntro}</p>
         </div>
-        <div className="music-benefit-grid">
-          {p.musicBenefits.map((benefit) => (
-            <article key={benefit.id}>
-              <h3>{benefit.title}</h3>
-              <p>{benefit.text}</p>
-            </article>
-          ))}
+        <div className="music-benefits-body">
+          <LessonPhoto photo={p.musicBenefitsPhoto} />
+          <div className="music-benefit-grid">
+            {p.musicBenefits.map((benefit) => (
+              <article key={benefit.id}>
+                <h3>{benefit.title}</h3>
+                <p>{benefit.text}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
       <InstructorPreview />
@@ -841,6 +866,7 @@ export default function App() {
     );
   return (
     <>
+      <ScrollEffects main={main} pathname={pathname} />
       <a className="skip-link" href="#main">
         {d.ui.skip}
       </a>

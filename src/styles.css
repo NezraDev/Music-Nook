@@ -28,6 +28,76 @@
 body {
   margin: 0;
 }
+.scroll-progress {
+  position: fixed;
+  z-index: 20;
+  inset: 0 0 auto;
+  height: 4px;
+  pointer-events: none;
+}
+.scroll-progress > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #236f70, #49b3b0, #e4c58c);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.experience,
+.music-benefits {
+  position: relative;
+}
+.music-scroll-scene {
+  position: relative;
+  overflow: hidden;
+  padding: 40px 0 28px;
+  background: radial-gradient(ellipse at 50% 100%, #173a49, #0d1929 75%);
+  color: #f5efdf;
+  border-block: 1px solid rgb(73 179 176 / 22%);
+  pointer-events: none;
+  user-select: none;
+}
+.music-scene-label {
+  text-align: center;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  color: #a5d7d0;
+}
+.music-scene-label span { margin-inline: 14px; color: #e4c58c; }
+.music-score {
+  display: block;
+  width: 100%;
+  height: clamp(220px, 25vw, 360px);
+  margin-top: 12px;
+}
+.score-staff-base { fill: none; stroke: #49b3b0; stroke-width: 1; opacity: 0.15; }
+.score-staff-ink {
+  fill: none;
+  stroke: url(#score-ink);
+  stroke-width: 1.4;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  opacity: 0.6;
+}
+.score-note { fill: #88d0ca; }
+.score-note path { fill: none; stroke: #88d0ca; stroke-width: 3; stroke-linecap: round; }
+.score-note-gold { fill: #e4c58c; }
+.score-note-gold path { stroke: #e4c58c; }
+.score-rhythm { fill: #49b3b0; opacity: 0.65; }
+.music-scene-caption {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+@media (max-width: 600px) {
+  .music-scroll-scene { padding-block: 28px; }
+  .music-score { height: 240px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress { display: none; }
+}
 main > section {
   min-width: 0;
 }
@@ -338,6 +408,41 @@ header nav > a:not(.button):hover {
   display: grid;
   gap: 24px;
 }
+.lesson-rows-home {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+}
+.lesson-rows-home .lesson {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 200px 1fr;
+  align-items: start;
+  gap: 24px;
+  padding: 24px;
+  min-width: 0;
+}
+.lesson-rows-home .lesson > div:last-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+}
+.lesson-rows-home .lesson h2 {
+  font-size: clamp(1.7rem, 2.4vw, 2.2rem);
+}
+.lesson-rows-home .lesson .button {
+  margin-top: auto;
+  width: 100%;
+  gap: 12px;
+  padding: 14px 16px;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+.lesson-rows-home .lesson .lesson-art {
+  height: 200px;
+}
+@media (max-width: 900px) {
+  .lesson-rows-home { grid-template-columns: minmax(0, 1fr); }
+}
 .lesson-heading {
   padding-right: 128px;
 }
@@ -629,6 +734,53 @@ header nav > a:not(.button):hover {
 .benefits h3 {
   font-size: 1.6rem;
   margin-bottom: 10px;
+}
+.section-photo {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #0d1929;
+}
+.section-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.section-photo figcaption {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 40px 24px 20px;
+  background: linear-gradient(transparent, rgb(13 25 41 / 88%));
+  color: #f5efdf;
+  font-size: 0.85rem;
+}
+.experience .section-photo {
+  margin-top: 28px;
+  aspect-ratio: 4 / 3;
+  max-height: 360px;
+}
+.music-benefits-body {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: stretch;
+  gap: 32px;
+}
+.music-benefits-body > .section-photo {
+  min-height: 440px;
+}
+.music-benefits-body > .section-photo img {
+  position: absolute;
+  inset: 0;
+}
+@media (max-width: 1000px) {
+  .music-benefits-body { grid-template-columns: minmax(0, 1fr); }
+  .music-benefits-body > .section-photo { min-height: 0; height: 360px; }
+  .music-benefits-body > .section-photo img { object-position: center 40%; }
+}
+@media (max-width: 500px) {
+  .music-benefits-body { gap: 24px; }
+  .music-benefits-body > .section-photo { height: 300px; }
 }
 .music-benefit-grid {
   display: grid;

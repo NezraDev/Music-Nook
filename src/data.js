@@ -105,7 +105,7 @@ export const siteData = {
       intro:
         "Discover piano, voice, and guitar through private lessons at home. Make room for creativity, explore the music you love, and build your musical skills one step at a time.",
       heroImage: {
-        src: "/images/home-pianist-hero.png",
+        src: "/images/home-pianist-hero.webp",
         alt: "An adult playing piano at home",
         width: 1983,
         height: 793,
@@ -114,6 +114,11 @@ export const siteData = {
       lessonsIntro:
         "Find your place at the piano, explore your voice, or pick up the guitar. Start with the sound that inspires you.",
       experienceTitle: "Why choose\nThe Music Nook?",
+      experiencePhoto: {
+        id: "clifford-lessons",
+        alt: "An instructor and a learner beside a keyboard during a home visit.",
+        caption: "Real lessons. Familiar spaces.",
+      },
       experienceIntro:
         "A familiar setting, space to ask questions, and music that sparks your curiosity. Discover a personal way to bring music into everyday life.",
       benefits: [
@@ -134,6 +139,11 @@ export const siteData = {
         },
       ],
       musicBenefitsTitle: "A talent to nurture.\nA joy to carry with you.",
+      musicBenefitsPhoto: {
+        id: "josaiah-lessons-2",
+        alt: "A learner practicing music notation in a notebook beside a keyboard.",
+        caption: "Small steps in a musical journey.",
+      },
       musicBenefitsIntro:
         "Musical talent grows through curiosity and practice. Learning an instrument or exploring your voice offers more than a song to play: it gives you new ways to create, listen, and express yourself.",
       musicBenefits: [
@@ -353,8 +363,8 @@ export const siteData = {
   gallery: [
   {
     "id": "alma-and-maria-lessons",
-    "src": "/images/alma-and-maria-lessons.png",
-    "thumbnail": "/images/alma-and-maria-lessons-thumb.png",
+    "src": "/images/alma-and-maria-lessons.webp",
+    "thumbnail": "/images/alma-and-maria-lessons-thumb.webp",
     "width": 1600,
     "height": 1200,
     "thumbnailWidth": 600,
@@ -368,8 +378,8 @@ export const siteData = {
   },
   {
     "id": "alma-and-maria-lessons-2",
-    "src": "/images/alma-and-maria-lessons-2.png",
-    "thumbnail": "/images/alma-and-maria-lessons-2-thumb.png",
+    "src": "/images/alma-and-maria-lessons-2.webp",
+    "thumbnail": "/images/alma-and-maria-lessons-2-thumb.webp",
     "width": 1201,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -383,8 +393,8 @@ export const siteData = {
   },
   {
     "id": "alma-and-maria-lessons-3",
-    "src": "/images/alma-and-maria-lessons-3.png",
-    "thumbnail": "/images/alma-and-maria-lessons-3-thumb.png",
+    "src": "/images/alma-and-maria-lessons-3.webp",
+    "thumbnail": "/images/alma-and-maria-lessons-3-thumb.webp",
     "width": 1600,
     "height": 1200,
     "thumbnailWidth": 600,
@@ -398,8 +408,8 @@ export const siteData = {
   },
   {
     "id": "brie-and-julia-studio",
-    "src": "/images/brie-and-julia-studio.png",
-    "thumbnail": "/images/brie-and-julia-studio-thumb.png",
+    "src": "/images/brie-and-julia-studio.webp",
+    "thumbnail": "/images/brie-and-julia-studio-thumb.webp",
     "width": 1200,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -413,8 +423,8 @@ export const siteData = {
   },
   {
     "id": "brie-and-julia-studio-2",
-    "src": "/images/brie-and-julia-studio-2.png",
-    "thumbnail": "/images/brie-and-julia-studio-2-thumb.png",
+    "src": "/images/brie-and-julia-studio-2.webp",
+    "thumbnail": "/images/brie-and-julia-studio-2-thumb.webp",
     "width": 1200,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -428,8 +438,8 @@ export const siteData = {
   },
   {
     "id": "brienne-studio",
-    "src": "/images/brienne-studio.png",
-    "thumbnail": "/images/brienne-studio-thumb.png",
+    "src": "/images/brienne-studio.webp",
+    "thumbnail": "/images/brienne-studio-thumb.webp",
     "width": 1200,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -443,8 +453,8 @@ export const siteData = {
   },
   {
     "id": "brienne-studio-2",
-    "src": "/images/brienne-studio-2.png",
-    "thumbnail": "/images/brienne-studio-2-thumb.png",
+    "src": "/images/brienne-studio-2.webp",
+    "thumbnail": "/images/brienne-studio-2-thumb.webp",
     "width": 1200,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -458,8 +468,8 @@ export const siteData = {
   },
   {
     "id": "brienne-studio-3",
-    "src": "/images/brienne-studio-3.png",
-    "thumbnail": "/images/brienne-studio-3-thumb.png",
+    "src": "/images/brienne-studio-3.webp",
+    "thumbnail": "/images/brienne-studio-3-thumb.webp",
     "width": 1600,
     "height": 1200,
     "thumbnailWidth": 600,
@@ -473,8 +483,8 @@ export const siteData = {
   },
   {
     "id": "clifford-lessons",
-    "src": "/images/clifford-lessons.png",
-    "thumbnail": "/images/clifford-lessons-thumb.png",
+    "src": "/images/clifford-lessons.webp",
+    "thumbnail": "/images/clifford-lessons-thumb.webp",
     "width": 1600,
     "height": 1200,
     "thumbnailWidth": 600,
@@ -488,8 +498,8 @@ export const siteData = {
   },
   {
     "id": "clifford-lessons-2",
-    "src": "/images/clifford-lessons-2.png",
-    "thumbnail": "/images/clifford-lessons-2-thumb.png",
+    "src": "/images/clifford-lessons-2.webp",
+    "thumbnail": "/images/clifford-lessons-2-thumb.webp",
     "width": 1600,
     "height": 1200,
     "thumbnailWidth": 600,
@@ -503,8 +513,8 @@ export const siteData = {
   },
   {
     "id": "ezra-studio",
-    "src": "/images/ezra-studio.png",
-    "thumbnail": "/images/ezra-studio-thumb.png",
+    "src": "/images/ezra-studio.webp",
+    "thumbnail": "/images/ezra-studio-thumb.webp",
     "width": 1600,
     "height": 1200,
     "thumbnailWidth": 600,
@@ -518,8 +528,8 @@ export const siteData = {
   },
   {
     "id": "ezra-studio-2",
-    "src": "/images/ezra-studio-2.png",
-    "thumbnail": "/images/ezra-studio-2-thumb.png",
+    "src": "/images/ezra-studio-2.webp",
+    "thumbnail": "/images/ezra-studio-2-thumb.webp",
     "width": 1600,
     "height": 1200,
     "thumbnailWidth": 600,
@@ -533,8 +543,8 @@ export const siteData = {
   },
   {
     "id": "josaiah-lessons",
-    "src": "/images/josaiah-lessons.png",
-    "thumbnail": "/images/josaiah-lessons-thumb.png",
+    "src": "/images/josaiah-lessons.webp",
+    "thumbnail": "/images/josaiah-lessons-thumb.webp",
     "width": 1201,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -548,8 +558,8 @@ export const siteData = {
   },
   {
     "id": "josaiah-lessons-2",
-    "src": "/images/josaiah-lessons-2.png",
-    "thumbnail": "/images/josaiah-lessons-2-thumb.png",
+    "src": "/images/josaiah-lessons-2.webp",
+    "thumbnail": "/images/josaiah-lessons-2-thumb.webp",
     "width": 1201,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -563,8 +573,8 @@ export const siteData = {
   },
   {
     "id": "josaiah-lessons-3",
-    "src": "/images/josaiah-lessons-3.png",
-    "thumbnail": "/images/josaiah-lessons-3-thumb.png",
+    "src": "/images/josaiah-lessons-3.webp",
+    "thumbnail": "/images/josaiah-lessons-3-thumb.webp",
     "width": 1201,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -578,8 +588,8 @@ export const siteData = {
   },
   {
     "id": "josaiah-lessons-4",
-    "src": "/images/josaiah-lessons-4.png",
-    "thumbnail": "/images/josaiah-lessons-4-thumb.png",
+    "src": "/images/josaiah-lessons-4.webp",
+    "thumbnail": "/images/josaiah-lessons-4-thumb.webp",
     "width": 1201,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -593,8 +603,8 @@ export const siteData = {
   },
   {
     "id": "kean-studio",
-    "src": "/images/kean-studio.png",
-    "thumbnail": "/images/kean-studio-thumb.png",
+    "src": "/images/kean-studio.webp",
+    "thumbnail": "/images/kean-studio-thumb.webp",
     "width": 1200,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -608,8 +618,8 @@ export const siteData = {
   },
   {
     "id": "kean-studio-2",
-    "src": "/images/kean-studio-2.png",
-    "thumbnail": "/images/kean-studio-2-thumb.png",
+    "src": "/images/kean-studio-2.webp",
+    "thumbnail": "/images/kean-studio-2-thumb.webp",
     "width": 1201,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -623,8 +633,8 @@ export const siteData = {
   },
   {
     "id": "kean-studio-3",
-    "src": "/images/kean-studio-3.png",
-    "thumbnail": "/images/kean-studio-3-thumb.png",
+    "src": "/images/kean-studio-3.webp",
+    "thumbnail": "/images/kean-studio-3-thumb.webp",
     "width": 1200,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -638,8 +648,8 @@ export const siteData = {
   },
   {
     "id": "miggy-lessons",
-    "src": "/images/miggy-lessons.png",
-    "thumbnail": "/images/miggy-lessons-thumb.png",
+    "src": "/images/miggy-lessons.webp",
+    "thumbnail": "/images/miggy-lessons-thumb.webp",
     "width": 1200,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -653,8 +663,8 @@ export const siteData = {
   },
   {
     "id": "miggy-lessons-2",
-    "src": "/images/miggy-lessons-2.png",
-    "thumbnail": "/images/miggy-lessons-2-thumb.png",
+    "src": "/images/miggy-lessons-2.webp",
+    "thumbnail": "/images/miggy-lessons-2-thumb.webp",
     "width": 1200,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -668,8 +678,8 @@ export const siteData = {
   },
   {
     "id": "miggy-lessons-3",
-    "src": "/images/miggy-lessons-3.png",
-    "thumbnail": "/images/miggy-lessons-3-thumb.png",
+    "src": "/images/miggy-lessons-3.webp",
+    "thumbnail": "/images/miggy-lessons-3-thumb.webp",
     "width": 1600,
     "height": 1200,
     "thumbnailWidth": 600,
@@ -683,8 +693,8 @@ export const siteData = {
   },
   {
     "id": "mijuel-lessons",
-    "src": "/images/mijuel-lessons.png",
-    "thumbnail": "/images/mijuel-lessons-thumb.png",
+    "src": "/images/mijuel-lessons.webp",
+    "thumbnail": "/images/mijuel-lessons-thumb.webp",
     "width": 1201,
     "height": 1600,
     "thumbnailWidth": 450,
@@ -698,8 +708,8 @@ export const siteData = {
   },
   {
     "id": "mijuel-studio",
-    "src": "/images/mijuel-studio.png",
-    "thumbnail": "/images/mijuel-studio-thumb.png",
+    "src": "/images/mijuel-studio.webp",
+    "thumbnail": "/images/mijuel-studio-thumb.webp",
     "width": 1600,
     "height": 1200,
     "thumbnailWidth": 600,
@@ -713,8 +723,8 @@ export const siteData = {
   },
   {
     "id": "mijuel-lessons-2",
-    "src": "/images/mijuel-lessons-2.png",
-    "thumbnail": "/images/mijuel-lessons-2-thumb.png",
+    "src": "/images/mijuel-lessons-2.webp",
+    "thumbnail": "/images/mijuel-lessons-2-thumb.webp",
     "width": 1201,
     "height": 1600,
     "thumbnailWidth": 450,
